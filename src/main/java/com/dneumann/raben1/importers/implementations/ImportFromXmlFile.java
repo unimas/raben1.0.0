@@ -73,7 +73,7 @@ public class ImportFromXmlFile implements ImportFromFile {
                     rows.put(String.valueOf(item.getId()), item);
                 } else {
                     Item item = rows.get(id);
-                    item.setAmount(Integer.valueOf(value));
+                    item.getValues().add(value);
                 }
             }
         }
@@ -83,7 +83,8 @@ public class ImportFromXmlFile implements ImportFromFile {
     private @NonNull Item createItem(String id, String value) {
         Item item = new Item();
         item.setId(Integer.valueOf(id));
-        item.setName(value);
+        item.setValues(new ArrayList<>());
+        item.getValues().add(value);
         return item;
     }
 }

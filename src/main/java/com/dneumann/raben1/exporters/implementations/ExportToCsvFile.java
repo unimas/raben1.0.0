@@ -26,9 +26,9 @@ public class ExportToCsvFile implements ExportToFile {
             writer.println();
 
             for (Item item : list.getElements()) {
-                    writer.print(escapeCsv(String.valueOf(item.getId())));
-                    writer.print(CSV_SEPARATOR + item.getName());
-                    writer.println(CSV_SEPARATOR + item.getAmount());
+                writer.print(escapeCsv(String.valueOf(item.getId())));
+                item.getValues().stream().forEach((value) -> writer.print(CSV_SEPARATOR + escapeCsv(value)));
+                writer.println();
             }
         }
     }
