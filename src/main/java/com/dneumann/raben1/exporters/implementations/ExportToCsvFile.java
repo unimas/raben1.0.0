@@ -17,20 +17,28 @@ public class ExportToCsvFile implements ExportToFile {
     @Override
     public void exportToFile(ElementList list, String filename) throws IOException {
         try (PrintWriter writer = new PrintWriter(new FileWriter(filename))) {
-            boolean firstColumn = true;
-            for (String column : list.getColumnOrder()) {
-                String separator = firstColumn ? "" : CSV_SEPARATOR;
-                writer.print(separator + escapeCsv(column));
-                firstColumn = false;
-            }
-            writer.println();
+            writeColumnNamesToFile(list, writer);
 
-            for (Item item : list.getElements()) {
-                writer.print(escapeCsv(String.valueOf(item.getId())));
-                item.getValues().stream().forEach((value) -> writer.print(CSV_SEPARATOR + escapeCsv(value)));
-                writer.println();
-            }
+            writeValuesToFile(list, writer);
         }
+    }
+
+    private void writeValuesToFile(ElementList list, PrintWriter writer) {
+        for (Item item : list.getElements()) {
+            writer.print(escapeCsv(String.valueOf(item.getId())));
+            item.getValues().stream().forEach((value) -> writer.print(CSV_SEPARATOR + escapeCsv(value)));
+            writer.println();
+        }
+    }
+
+    private void writeColumnNamesToFile(ElementList list, PrintWriter writer) {
+        boolean firstColumn = true;
+        for (String column : list.getColumnOrder()) {
+            String separator = firstColumn ? "" : CSV_SEPARATOR;
+            writer.print(separator + escapeCsv(column));
+            firstColumn = false;
+        }
+        writer.println();
     }
 
     private String escapeCsv(String value) {
