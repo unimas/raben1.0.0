@@ -5,6 +5,7 @@ import com.dneumann.raben1.exporters.ExportToFile;
 import com.dneumann.raben1.exporters.implementations.ExportToCsvFile;
 import com.dneumann.raben1.importers.ImportFromFile;
 import com.dneumann.raben1.importers.implementations.ImportFromXmlFile;
+import com.dneumann.raben1.services.FileTranslator;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.xml.sax.SAXException;
 
@@ -32,9 +33,9 @@ public class Raben1Application {
         }
         ImportFromFile xml = new ImportFromXmlFile();
         ExportToFile csvWriter = new ExportToCsvFile();
+        FileTranslator translator = new FileTranslator(xml,csvWriter);
         try {
-            ElementList list = xml.importFromFile(inputFile);
-            csvWriter.exportToFile(list, outputFile);
+            translator.translateFile(inputFile,outputFile);
         } catch (IOException | SAXException e) {
             throw new RuntimeException(e);
         }

@@ -23,14 +23,6 @@ public class ExportToCsvFile implements ExportToFile {
         }
     }
 
-    private void writeValuesToFile(ElementList list, PrintWriter writer) {
-        for (Item item : list.getElements()) {
-            writer.print(escapeCsv(String.valueOf(item.getId())));
-            item.getValues().stream().forEach((value) -> writer.print(CSV_SEPARATOR + escapeCsv(value)));
-            writer.println();
-        }
-    }
-
     private void writeColumnNamesToFile(ElementList list, PrintWriter writer) {
         boolean firstColumn = true;
         for (String column : list.getColumnOrder()) {
@@ -39,6 +31,14 @@ public class ExportToCsvFile implements ExportToFile {
             firstColumn = false;
         }
         writer.println();
+    }
+
+    private void writeValuesToFile(ElementList list, PrintWriter writer) {
+        for (Item item : list.getElements()) {
+            writer.print(escapeCsv(String.valueOf(item.getId())));
+            item.getValues().stream().forEach((value) -> writer.print(CSV_SEPARATOR + escapeCsv(value)));
+            writer.println();
+        }
     }
 
     private String escapeCsv(String value) {
